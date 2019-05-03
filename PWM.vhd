@@ -1,3 +1,7 @@
+-- PWM Generator
+-- Maxime Chretien (MixLeNain)
+-- v1.1
+
 
 library ieee;
 use ieee.std_logic_1164.all;
