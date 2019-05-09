@@ -1,28 +1,31 @@
 -- PWM Generator
 -- Maxime Chretien (MixLeNain)
--- v1.1
+-- v1.2
 
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity PWM is 
 	generic(
-		constant F_clk	:	integer		:=	50000000; --input clock frequency --use ~5000 for sim
-		constant F_PWM	:	integer		:=	500		  --PWM frequency
+		constant F_clk	    :	integer	:=	5000;   --input clock frequency
+		constant F_PWM	    :	integer	:=	500;	--PWM frequency
+		constant Precision  :   integer	:=	4		--Duty Cycle precision (bits number)
 	);
 	port(
-		clk 		:	in std_logic;	-- input clock
-		duty		:	in	integer range 0 to 255;	--duty cycle value
-		PWMout	 	:	out std_logic  -- Output signal
+		clk 	:	in  std_logic;	-- input clock
+		duty	:	in  std_logic_vector(Precision-1 downto 0);	--duty cycle value
+		PWMout	:	out std_logic  -- Output signal
 	);
 end PWM;
 
 architecture PWM of PWM is
-	signal	 DutyCount	:	integer range 0 to 255 		:= 0;	-- Counter for duty cycle
-	constant Div_PWM	:	integer 					:= F_clk / F_PWM / 2; -- frequency divider value
-	signal	 PWMCount	:	integer range 0 to Div_PWM 	:= 0;		-- frequency divider counter
-	signal	 PWM_clk	:	std_logic 					:= '0';		-- PWM clock
+	signal	 DutyCount	   :	std_logic_vector(Precision-1 downto 0) := (others => '0');	 -- Counter for duty cycle
+	constant DutyCountMax  :    std_logic_vector(Precision-1 downto 0) := (others => '1');   -- Counter max value
+	constant Div_PWM	   :	integer 							   := F_clk / F_PWM / 2; -- frequency divider value
+	signal	 PWMCount	   :	integer range 0 to Div_PWM 			   := 0;   -- frequency divider counter
+	signal	 PWM_clk	   :	std_logic 							   := '0'; -- PWM clock
 begin
 	-- frequency divider
 	process begin
@@ -38,10 +41,10 @@ begin
 	-- Duty cycle
 	process begin
 		wait until rising_edge(PWM_clk);
-		if(DutyCount = 255) then
-			DutyCount <= 0;
+		if(DutyCount = DutyCountMax) then
+			DutyCount <= (others => '0');
 		else
-			DutyCount <= DutyCount + 1;
+			DutyCount <= std_logic_vector(unsigned(DutyCount) + 1);
 		end if;
 	end process;
 	
