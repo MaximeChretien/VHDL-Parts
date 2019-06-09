@@ -1,13 +1,13 @@
 -- PWM Generator
 -- Maxime Chretien (MixLeNain)
--- v1.2
+-- v1.3
 
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity PWM is 
+entity pwm is 
     generic(
         constant F_clk      : integer := 5000; --input clock frequency
         constant F_PWM      : integer := 500;  --PWM frequency
@@ -18,9 +18,9 @@ entity PWM is
         duty   : in  std_logic_vector(Precision-1 downto 0); --duty cycle value
         PWMout : out std_logic -- Output signal
     );
-end PWM;
+end pwm;
 
-architecture PWM of PWM is
+architecture pwm of pwm is
     signal   DutyCount    : std_logic_vector(Precision-1 downto 0) := (others => '0');   -- Counter for duty cycle
     constant DutyCountMax : std_logic_vector(Precision-1 downto 0) := (others => '1');   -- Counter max value
     constant Div_PWM      : integer                                := F_clk / F_PWM / 2; -- frequency divider value
@@ -50,4 +50,4 @@ begin
 
     -- output
     PWMout <= '1' when DutyCount < duty else '0';
-end PWM;
+end pwm;

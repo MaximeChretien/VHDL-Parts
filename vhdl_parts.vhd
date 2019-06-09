@@ -2,7 +2,7 @@
 -- A package that create components of all functions
 -- designed in the other files of this folder
 -- Maxime Chretien (MixLeNain)
--- v1.1
+-- v1.2
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -10,7 +10,7 @@ use ieee.std_logic_1164.all;
 package vhdl_parts is
 
     -- PWM Generator
-    component PWM is
+    component pwm is
         generic(
             constant F_clk     : integer := 5000; --input clock frequency
             constant F_PWM     : integer := 500;  --PWM frequency
