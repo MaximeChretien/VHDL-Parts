@@ -34,6 +34,20 @@ package vhdl_parts is
             clk_out : out std_logic  -- Output clock
         );
     end component;
-
+    
+    -- Read-Only Memory     
+    component rom is
+        generic(
+            constant addressBits : integer := 4;        -- Number of address bits
+            constant dataBits    : integer := 8;        -- Number of data bits
+            constant init_file   : string := "rom.hex"  -- Initialisation file
+        );
+        port(
+            clk           : in  std_logic; -- Input clock
+            address       : in  std_logic_vector(addressBits-1 downto 0); -- Address input
+            dataOut       : out std_logic_vector(dataBits-1 downto 0);    -- Data output
+            nOutputEnable : in  std_logic  -- Output enable signal
+        );
+    end component;
 
 end vhdl_parts;
