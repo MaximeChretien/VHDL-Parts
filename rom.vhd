@@ -21,7 +21,7 @@ entity rom is
 end rom;
 
 architecture rom of rom is
-    -- Memory definition and I (2nitialisation
+    -- Memory definition and Initialisation
     type memory is array (0 to (2**addressBits)-1) of std_logic_vector(dataBits-1 downto 0);
     signal data: memory;
     attribute ram_init_file: string;
